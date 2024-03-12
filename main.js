@@ -8,16 +8,16 @@ const player2 = {
     Icon: "O"
 };
 
-let pointer = 0;
-
+let winningColor = "indigo";
+let pointer = 1;
+let game;
   
 function gameArray() {
     const board = [
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0]
-    ];
-  
+    ];  
     return {
       getBoard: function () {
         return board;
@@ -30,17 +30,10 @@ function gameArray() {
           console.error('Invalid board index');
         }
       }
-      // Add other methods as needed
-    };
-  
+    };  
     function isValidIndex(row, col) {
       return row >= 0 && row < 3 && col >= 0 && col < 3;
     }
-}
-
-function boardState() {
-//fill in cards based on array
-//show winnerthat
 }
 
 function whoseTurn() {   
@@ -48,12 +41,95 @@ function whoseTurn() {
     return turn;
 }
 
+function isWinner() {
+    let bap = game.getBoard();
+    let winner1;
+    let winner2;
+    let winner3;
+    function win(){ 
+    winner1.style.backgroundColor = winningColor;
+    winner2.style.backgroundColor = winningColor;
+    winner3.style.backgroundColor = winningColor;
+    }
+   
+    if (bap[0][0] !== 0 && bap[0][0] ==  bap[0][1] &&  bap[0][0] ==  bap[0][2]) {
+        winner1 = document.getElementById("a0b0"); 
+        winner2 = document.getElementById("a0b1");
+        winner3 = document.getElementById("a0b2");  
+        win(); 
+        return "Winner";
+    }
+    if (bap[0][0] !== 0 && bap[0][0] ==  bap[1][0] &&  bap[0][0] ==  bap[2][0]) {
+        winner1 = document.getElementById("a0b0"); 
+        winner2 = document.getElementById("a1b0");
+        winner3 = document.getElementById("a2b0"); 
+        win(); 
+        return "Winner";    
+    }
+    if (bap[0][0] !== 0 && bap[0][0] ==  bap[1][1] &&  bap[0][0] ==  bap[2][2]) {
+        winner1 = document.getElementById("a0b0"); 
+        winner2 = document.getElementById("a1b1");
+        winner3 = document.getElementById("a2b2"); 
+        win(); 
+        return "Winner"; 
+    }
+    if (bap[2][0] !== 0 && bap[2][0] ==  bap[2][1] &&  bap[2][0] ==  bap[2][2]) {
+        winner1 = document.getElementById("a2b0"); 
+        winner2 = document.getElementById("a2b1");
+        winner3 = document.getElementById("a2b2");  
+        win(); 
+        return "Winner";   
+    }
+    if (bap[2][0] !== 0 && bap[2][0] ==  bap[1][1] &&  bap[2][0] ==  bap[0][2]) {
+        winner1 = document.getElementById("a2b0"); 
+        winner2 = document.getElementById("a1b1");
+        winner3 = document.getElementById("a0b2"); 
+        win();  
+        return "Winner";           
+    }
+    if (bap[0][2] !== 0 && bap[0][2] ==  bap[1][2] &&  bap[0][2] ==  bap[2][2]) {
+        winner1 = document.getElementById("a0b2"); 
+        winner2 = document.getElementById("a1b2");
+        winner3 = document.getElementById("a2b2"); 
+        win(); 
+        return "Winner";   
+    }
+    if (bap[0][1] !== 0 && bap[0][1] ==  bap[1][1] &&  bap[0][1] ==  bap[2][1]) {
+        winner1 = document.getElementById("a0b1"); 
+        winner2 = document.getElementById("a1b1");
+        winner3 = document.getElementById("a2b1"); 
+        win();  
+        return "Winner";   
+    }
+    if (bap[1][0] !== 0 && bap[1][0] ==  bap[1][1] &&  bap[1][0] ==  bap[1][2]) {
+        winner1 = document.getElementById("a1b0"); 
+        winner2 = document.getElementById("a1b1");
+        winner3 = document.getElementById("a1b2");
+        win(); 
+        return "Winner";  
+    }
+    if (pointer > 9) {
+            return "DRAW";
+        }
+}
+
+function results() {
+    let result = isWinner();
+    if (result !== undefined) {
+    document.getElementById("header").style.color = "lime";
+    document.getElementById("header").textContent = result;
+    document.getElementById("status").style.display = "grid";
+    document.getElementById("status").textContent = "PLAY AGAIN?";
+    }
+}
+
 function gameState() {
     let row;
     let col;
     let cellValue;
-    
-    document.querySelectorAll('.card').forEach(card => {        
+    //if (whoseTurn() == "O" && opponent == "ai") {AIturn();} 
+
+    document.querySelectorAll('.card').forEach(card => {          
         for ( row = 0; row < game.getBoard().length; row++) {
             for ( col = 0; col < game.getBoard()[row].length; col++) {
                  cellValue = game.getBoard()[row][col];
@@ -64,28 +140,26 @@ function gameState() {
                     }
                     if(card.textContent == "X") {
                         card.style.color = "orange";
-                    }
+                    }                    
                 }
             }   
-        }
+        }        
     });
-    if (pointer > 8) {
-    document.getElementById("header").style.color = "red";
-    document.getElementById("header").textContent = "Finished";
-    document.getElementById("status").style.display = "grid";
-    document.getElementById("status").textContent = "PLAY AGAIN?";
-    } 
-}        
-    
+    result = results();
    
-    //conclude winner
-    //restart
+}        
 
+function AIturn(){
+    console.log("AI TURN");
+}
 
 function newGame(button) { 
-    pointer = 0;
+    pointer = 1;
     document.querySelectorAll('.card').forEach(card => {
-        card.textContent = '';});
+        card.textContent = '';
+        card.style.backgroundColor = "black";
+        document.getElementById("status").style.display = "none";
+      });
     game = gameArray();  
     whoseTurn();    
     buttonSelector = "." + button
@@ -93,25 +167,23 @@ function newGame(button) {
     foo.style.display = "none";
     document.getElementById('header').textContent = 'TIC TAC TOE';
     document.querySelector(".board").style.display = "grid"; 
-    document.getElementById('header').style.color = 'aqua';
-    console.log(game.getBoard());
+    document.getElementById('header').style.color = 'aqua';    
     gameState();
 }  
 
 function clicked (button) {
-    const location = button.replace(/^a/, '').replace(/b/g, ', ');
-    
+    const location = button.replace(/^a/, '').replace(/b/g, ', ');    
     let player = whoseTurn();   
     let check = game.getBoard()[button[1]][button[3]];
-    if (check == 0) {  
-        pointer++;      
-        game.setCell(button[1], button[3], player);
-    }    
-    gameState();    
+    if (isWinner() == undefined){
+        if (check == 0) {  
+            pointer++;      
+            game.setCell(button[1], button[3], player);
+        }    
+        gameState(); 
+    }       
 }
 
-
-//add listener to each card that runs the click function.
 document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', function() {
       clicked(this.id);
