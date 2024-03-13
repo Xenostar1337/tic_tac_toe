@@ -457,7 +457,7 @@ function AIturn(){
             gameState(); 
             return  
         }
-        //if opponet controls two corners take an edge ml or tm
+//if opponet controls two corners take an edge ml or tm
         if (tr.textContent == player1.Icon && bl.textContent == player1.Icon && ml.textContent == ""){
             game.setCell(1, 0, player2.Icon)        
             pointer++;
@@ -500,21 +500,21 @@ function AIturn(){
             return     
         }
         //take ML
-        if (br.textContent == "") {
+        if (ml.textContent == "") {
             game.setCell(1, 0, player2.Icon)        
             pointer++;
             gameState(); 
             return     
         }
         //take MR
-        if (br.textContent == "") {
+        if (mr.textContent == "") {
             game.setCell(1, 2, player2.Icon)        
             pointer++;
             gameState(); 
             return     
         }
         //take BM
-        if (br.textContent == "") {
+        if (bm.textContent == "") {
             game.setCell(2, 1, player2.Icon)        
             pointer++;
             gameState(); 
@@ -558,17 +558,8 @@ function newGame(button) {
     let aiBox = document.getElementById("aiBox");
     let p1Name = document.getElementById("playerName1");
     let p2Name = document.getElementById("playerName2");
-    if (aiBox.checked && p2Name.value == "") {
-        p2Name.value = "T-1.000";
-    }
-    if (p2Name.value == ""){
-        p2Name.value = "Karen";
-    }
-    if (p1Name.value == ""){
-        p1Name.value = "Chad";
-    }
-    console.log(player1.Name());
-    console.log(player2.Name());
+    
+    
   
     document.querySelectorAll('.card').forEach(card => {
         card.textContent = '';
@@ -578,6 +569,15 @@ function newGame(button) {
       });
     game = gameArray();  
     whoseTurn();    
+    if (aiBox.checked && p2Name.value == "") {
+        p2Name.value = "T-1.000";
+    }
+    if (p2Name.value == ""){
+        p2Name.value = "Karen";
+    }
+    if (p1Name.value == ""){
+        p1Name.value = "Chad";
+    }
     buttonSelector = "." + button
     let foo = document.getElementById(button.id);
     foo.style.display = "none";
